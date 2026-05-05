@@ -1,6 +1,6 @@
 ---
 name: sync-image-as-webp
-description: Use this skill when converting a source directory tree of PNG files to lossless WebP with `cwebp`, copying all non-PNG files unchanged, preserving directory structure, syncing macOS creation/modification times, and analyzing Finder item-count differences. If source or target directory is not provided, ask the user before proceeding.
+description: Use this skill when converting a source directory tree of PNG files to lossless WebP with `cwebp`, copying all non-PNG files unchanged, preserving directory structure, syncing macOS creation/modification times.
 ---
 
 # Sync Image As WebP
@@ -11,8 +11,8 @@ Convert a source directory into a target directory while preserving structure:
 
 - Convert PNG files to same-name `.webp` using lossless WebP.
 - Copy all non-PNG files unchanged.
-- Preserve empty directories when matching Finder item counts matters.
-- Optionally sync target file creation time and modification time from source files.
+- Sync empty directories.
+- Sync target file creation time and modification time from source files.
 - Verify file, directory, timestamp, and item-count differences.
 
 
@@ -36,13 +36,13 @@ After paths are known, normalize `~` and relative paths to absolute paths before
 
 Use these mappings:
 
-- Source PNG file -> target `.webp`
-- Source non-PNG file -> target same filename
-- Source directory -> target same relative directory
+- Source PNG file → target `.webp`
+- Source non-PNG file → target same filename
+- Source directory → target same relative directory
 
-Treat PNG extensions case-insensitively unless the user explicitly asks for case-sensitive matching.
+Treat PNG extensions case-insensitively.
 
-Never delete files unless the user explicitly asks.
+Never delete files.
 
 
 
@@ -60,8 +60,6 @@ On macOS, timestamp syncing uses:
 command -v GetFileInfo
 command -v SetFile
 ```
-
-If writing outside the current workspace, request approval before running commands that create files, copy files, convert images, or update metadata.
 
 
 
@@ -117,10 +115,6 @@ while IFS= read -r -d '' f; do
 done < <(find "$src" -type f ! -iname '*.png' -print0)
 ```
 
-
-
-## Sync Timestamps
-
 For each source file, map to its target file and sync:
 
 - modification time with `touch -r`
@@ -160,7 +154,7 @@ printf 'synced=%d\nfailed=%d\n' "$synced" "$failed"
 
 ## Verification
 
-Verify expected target files exist:
+### Verify expected target files exist
 
 ```bash
 missing=0
@@ -183,7 +177,7 @@ done < <(find "$src" -type f -print0)
 printf 'missing=%d\n' "$missing"
 ```
 
-Verify timestamp parity:
+### Verify timestamp parity
 
 ```bash
 checked=0
@@ -214,11 +208,7 @@ printf 'checked=%d\nmtime_diff=%d\ncreation_time_diff=%d\n' \
   "$checked" "$mtime_diff" "$creation_time_diff"
 ```
 
-
-
-## Finder Item Count Analysis
-
-Finder item counts may include both files and folders. If Finder shows an item-count difference, compare directory trees as well as files.
+### Verify Item Count
 
 ```bash
 printf 'source files: '
@@ -249,8 +239,6 @@ comm -23 "$src_dirs" "$dst_dirs"
 printf 'dirs only in target:\n'
 comm -13 "$src_dirs" "$dst_dirs"
 ```
-
-If file counts match but directory counts differ, the usual cause is an empty directory that was not created during file-driven copy/conversion.
 
 
 
