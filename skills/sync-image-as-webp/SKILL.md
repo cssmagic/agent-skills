@@ -1,6 +1,6 @@
 ---
 name: sync-image-as-webp
-description: Use this skill when converting a source directory tree of PNG files to lossless WebP with `cwebp`, copying all non-PNG files unchanged, preserving directory structure, syncing macOS creation/modification times.
+description: Use this skill when converting a source directory tree of PNG files to lossless WebP with `cwebp`, copying all non-PNG files unchanged, preserving directory structure, and syncing macOS creation and modification timestamps (if possible).
 ---
 
 # Sync Image As WebP
@@ -36,13 +36,19 @@ After paths are known, normalize `~` and relative paths to absolute paths before
 
 Use these mappings:
 
-- Source PNG file → target `.webp`
-- Source non-PNG file → target same filename
-- Source directory → target same relative directory
+- Source PNG file -> target `.webp`
+- Source non-PNG file -> target same filename
+- Source directory -> target same relative directory
 
 Treat PNG extensions case-insensitively.
 
 Never delete files.
+
+Do not overwrite existing mapped target files unless the user explicitly allows overwrite behavior.
+
+Reject the run before writing if multiple source files map to the same target path.
+
+Reject the run before writing if the target directory is inside the source directory.
 
 
 
@@ -54,12 +60,20 @@ Prefer the official WebP CLI:
 command -v cwebp
 ```
 
-On macOS, timestamp syncing uses:
+The bundled script requires Python 3:
+
+```bash
+command -v python3
+```
+
+On macOS, creation-time syncing uses:
 
 ```bash
 command -v GetFileInfo
 command -v SetFile
 ```
+
+If creation-time syncing is unavailable, continue the run and tell the user in the final report that only modification times were synced.
 
 
 
@@ -72,173 +86,37 @@ src="/absolute/path/to/source"
 dst="/absolute/path/to/target"
 ```
 
-Inspect counts before writing:
+Run the bundled script from this skill directory:
 
 ```bash
-find "$src" -type f -iname '*.png' | wc -l
-find "$src" -type f ! -iname '*.png' | wc -l
-find "$src" -type d | wc -l
+python3 scripts/sync_image_as_webp.py "$src" "$dst"
 ```
 
-Create all directories, including empty ones:
+Only pass `--overwrite` if the user explicitly permits replacing existing mapped target files:
 
 ```bash
-while IFS= read -r -d '' d; do
-  rel="${d#$src/}"
-  if [[ "$d" == "$src" ]]; then
-    mkdir -p "$dst"
-  else
-    mkdir -p "$dst/$rel"
-  fi
-done < <(find "$src" -type d -print0)
+python3 scripts/sync_image_as_webp.py --overwrite "$src" "$dst"
 ```
 
-Convert PNG files to lossless WebP:
+The script performs preflight checks before writing:
 
-```bash
-while IFS= read -r -d '' f; do
-  rel="${f#$src/}"
-  out="$dst/${rel%.*}.webp"
-  mkdir -p "$(dirname "$out")"
-  cwebp -quiet -lossless "$f" -o "$out"
-done < <(find "$src" -type f -iname '*.png' -print0)
-```
-
-Copy all non-PNG files unchanged:
-
-```bash
-while IFS= read -r -d '' f; do
-  rel="${f#$src/}"
-  out="$dst/$rel"
-  mkdir -p "$(dirname "$out")"
-  cp -p "$f" "$out"
-done < <(find "$src" -type f ! -iname '*.png' -print0)
-```
-
-For each source file, map to its target file and sync:
-
-- modification time with `touch -r`
-- macOS creation time with `GetFileInfo` + `SetFile`
-
-```bash
-synced=0
-failed=0
-
-while IFS= read -r -d '' f; do
-  rel="${f#$src/}"
-
-  if [[ "$rel" =~ \.[Pp][Nn][Gg]$ ]]; then
-    out="$dst/${rel%.*}.webp"
-  else
-    out="$dst/$rel"
-  fi
-
-  if [[ ! -f "$out" ]]; then
-    printf 'missing target: %s\n' "$out" >&2
-    failed=$((failed + 1))
-    continue
-  fi
-
-  touch -r "$f" "$out"
-
-  created="$(GetFileInfo -d "$f")"
-  SetFile -d "$created" "$out"
-
-  synced=$((synced + 1))
-done < <(find "$src" -type f -print0)
-
-printf 'synced=%d\nfailed=%d\n' "$synced" "$failed"
-```
+- target path collisions, including case-insensitive collisions
+- existing mapped target files, unless `--overwrite` is used
+- target directory nested inside source directory
+- target directory paths that already exist as files
 
 
 
 ## Verification
 
-### Verify expected target files exist
+The script verifies and reports:
 
-```bash
-missing=0
-
-while IFS= read -r -d '' f; do
-  rel="${f#$src/}"
-
-  if [[ "$rel" =~ \.[Pp][Nn][Gg]$ ]]; then
-    out="$dst/${rel%.*}.webp"
-  else
-    out="$dst/$rel"
-  fi
-
-  if [[ ! -f "$out" ]]; then
-    printf 'missing: %s\n' "$out"
-    missing=$((missing + 1))
-  fi
-done < <(find "$src" -type f -print0)
-
-printf 'missing=%d\n' "$missing"
-```
-
-### Verify timestamp parity
-
-```bash
-checked=0
-mtime_diff=0
-creation_time_diff=0
-
-while IFS= read -r -d '' f; do
-  rel="${f#$src/}"
-
-  if [[ "$rel" =~ \.[Pp][Nn][Gg]$ ]]; then
-    out="$dst/${rel%.*}.webp"
-  else
-    out="$dst/$rel"
-  fi
-
-  src_m="$(stat -f '%m' "$f")"
-  out_m="$(stat -f '%m' "$out")"
-  [[ "$src_m" == "$out_m" ]] || mtime_diff=$((mtime_diff + 1))
-
-  src_b="$(stat -f '%B' "$f")"
-  out_b="$(stat -f '%B' "$out")"
-  [[ "$src_b" == "$out_b" ]] || creation_time_diff=$((creation_time_diff + 1))
-
-  checked=$((checked + 1))
-done < <(find "$src" -type f -print0)
-
-printf 'checked=%d\nmtime_diff=%d\ncreation_time_diff=%d\n' \
-  "$checked" "$mtime_diff" "$creation_time_diff"
-```
-
-### Verify Item Count
-
-```bash
-printf 'source files: '
-find "$src" -type f | wc -l
-
-printf 'target files: '
-find "$dst" -type f | wc -l
-
-printf 'source dirs: '
-find "$src" -type d | wc -l
-
-printf 'target dirs: '
-find "$dst" -type d | wc -l
-```
-
-Find directories only present on one side:
-
-```bash
-src_dirs="$(mktemp)"
-dst_dirs="$(mktemp)"
-
-find "$src" -type d -print | sed "s#^$src#.#" | sort > "$src_dirs"
-find "$dst" -type d -print | sed "s#^$dst#.#" | sort > "$dst_dirs"
-
-printf 'dirs only in source:\n'
-comm -23 "$src_dirs" "$dst_dirs"
-
-printf 'dirs only in target:\n'
-comm -13 "$src_dirs" "$dst_dirs"
-```
+- expected target files exist
+- PNG conversion and copy command failures
+- modification-time parity
+- macOS creation-time parity when available
+- source and target directory differences
+- target-only files
 
 
 
@@ -253,4 +131,8 @@ Summarize with:
 - directories created count if relevant
 - missing target count
 - timestamp diff counts
+- command failure count
+- whether creation times were synced
 - any source-only or target-only directories/files
+
+If creation times were not synced, explicitly tell the user that only modification times were preserved.
