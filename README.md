@@ -1,6 +1,6 @@
 # Agent Skills
 
-A collection of skills for AI agents, like Codex, Claude Code, Cursor, OpenClaw, etc. Skills are packaged instructions and scripts that extend agent capabilities.
+A collection of skills for AI agents, such as Codex, Claude Code, Cursor, and OpenClaw. Skills are packaged instructions and scripts that extend agent capabilities.
 
 Skills follow the [Agent Skills](https://agentskills.io/) format.
 
@@ -23,6 +23,7 @@ npx skills add cssmagic/agent-skills
 ## Usage
 
 (TBD)
+
 
 
 ## Skill Structure
