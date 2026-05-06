@@ -1,0 +1,4 @@
+interface:
+  display_name: "Link as Global Skills"
+  short_description: "Symlink local skills for agent discovery"
+  default_prompt: "Use $link-as-global-skills to link my local repository skills into ~/.agents/skills for development."
