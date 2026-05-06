@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bilingual README"
+  short_description: "Create English-first bilingual READMEs"
+  default_prompt: "Use $bilingual-readme to convert this repository README into an English-first bilingual README.md and README.zh.md pair."
