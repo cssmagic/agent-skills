@@ -1,0 +1,4 @@
+interface:
+  display_name: "Convert PNG to WebP"
+  short_description: "Convert PNG files to WebP in place"
+  default_prompt: "Use $convert-png-to-webp to convert PNG files in a directory to lossless WebP and delete originals after successful conversion."
