@@ -1,6 +1,9 @@
 ---
 name: markdown-guidelines
 description: "Use this skill when writing, editing, or reviewing Markdown documents, including AI agent skills (`SKILL.md` files), that must follow strict house formatting rules: tab indentation, hyphen list markers, and extra spacing before second-level headings."
+license: MIT
+metadata:
+	author: cssmagic
 ---
 
 # Markdown Guidelines
