@@ -3,7 +3,7 @@ name: bilingual-readme
 description: Create and maintain English-first bilingual GitHub project READMEs. Use when converting a single-language README to a paired `README.md` and `README.zh.md`, adding a Chinese README beside an English default README, translating a Chinese README into the default English README, or keeping existing English and Chinese README files structurally synchronized.
 license: MIT
 metadata:
-	author: cssmagic
+  author: cssmagic
 ---
 
 # Bilingual README

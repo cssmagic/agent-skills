@@ -3,7 +3,7 @@ name: link-as-global-skills
 description: Use this skill when developing AI agent skills in a local repository and needing to symlink that repository's skill directories into the global `~/.agents/skills` directory so local agents can discover and use them.
 license: MIT
 metadata:
-	author: cssmagic
+  author: cssmagic
 ---
 
 # Link As Global Skills
