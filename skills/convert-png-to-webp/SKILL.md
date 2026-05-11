@@ -1,6 +1,6 @@
 ---
 name: convert-png-to-webp
-description: "Use this skill when converting PNG images in a directory tree to lossless WebP in place with `cwebp`, preserving original file timestamps, deleting the source PNG files only after successful conversion, and reporting the processed image count."
+description: "Use when converting PNG images in a directory tree to lossless WebP in place with `cwebp`, preserving original file timestamps, deleting the source PNG files only after successful conversion, and reporting the processed image count."
 license: MIT
 metadata:
   author: cssmagic
