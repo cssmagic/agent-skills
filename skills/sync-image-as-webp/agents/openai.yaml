@@ -1,4 +1,4 @@
 interface:
   display_name: "Sync Image as WebP"
-  short_description: "Convert PNG trees to lossless WebP"
-  default_prompt: "Use $sync-image-as-webp to convert a PNG directory tree to lossless WebP while preserving structure and timestamps."
+  short_description: "Sync a directory tree to target, converting PNG to WebP"
+  default_prompt: "Use $sync-image-as-webp to sync a source directory to a target, converting PNG files to lossless WebP while copying non-PNG files unchanged."
