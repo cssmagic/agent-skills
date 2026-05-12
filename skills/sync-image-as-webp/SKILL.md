@@ -1,6 +1,6 @@
 ---
 name: sync-image-as-webp
-description: Use this skill when converting a source directory tree of PNG files to lossless WebP with `cwebp`, copying all non-PNG files unchanged, preserving directory structure, and syncing macOS creation and modification timestamps (if possible).
+description: Use when syncing a source directory to a target directory, converting PNG files to lossless WebP using `cwebp`, copying all non-PNG files unchanged, preserving the directory structure, and syncing creation and modification timestamps (if possible).
 license: MIT
 metadata:
   author: cssmagic

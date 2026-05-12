@@ -1,0 +1,4 @@
+interface:
+  display_name: "Markdown Guidelines"
+  short_description: "House formatting rules for Markdown documents"
+  default_prompt: "Use $markdown-guidelines when writing or editing any Markdown document."

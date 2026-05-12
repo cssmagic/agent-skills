@@ -1,6 +1,6 @@
 ---
 name: markdown-guidelines
-description: "Use this skill when writing, editing, or reviewing Markdown documents, including AI agent skills (`SKILL.md` files), that must follow strict house formatting rules: tab indentation, hyphen list markers, and extra spacing before second-level headings."
+description: "Use when writing, editing, or reviewing Markdown documents, including Agent Skills (`SKILL.md` files), that must follow strict house formatting rules."
 license: MIT
 metadata:
   author: cssmagic
@@ -10,14 +10,7 @@ metadata:
 
 ## Rules
 
-- Use tab characters for indentation.
+- Use tab characters for indentation in Markdown body. But in frontmatter (YAML metadata), always use 2 spaces for indentation; do not use tab characters.
 - Use `- list item` syntax for unordered lists.
-- Insert three blank lines before every second-level heading (`##`), except when it immediately follows a first-level heading (`#`).
-
-
-
-## Workflow
-
-- Apply these rules when creating new Markdown.
-- Preserve existing meaning when reformatting Markdown.
-- Before finishing, scan the edited Markdown for spaces used as indentation, non-hyphen unordered list markers, and missing blank lines before non-exempt `##` headings.
+- Use `***` syntax for a horizontal rule.
+- Insert three blank lines before every second-level heading (`##`), except when it immediately follows a first-level heading (`#`) or a horizontal rule (`***`).
