@@ -13,6 +13,9 @@ $RECYCLE.BIN/
 
 .svn
 .idea
+__pycache__
+
+.claude
 
 .output
 _*.md
