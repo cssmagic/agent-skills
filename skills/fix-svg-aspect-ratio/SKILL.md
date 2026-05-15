@@ -1,6 +1,9 @@
 ---
 name: fix-svg-aspect-ratio
 description: A brief description of what this skill does
+license: MIT
+metadata:
+  author: cssmagic
 ---
 
 # fix-svg-aspect-ratio
