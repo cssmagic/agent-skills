@@ -3,7 +3,6 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 .DS_Store
-.klive
 .dropbox.cache
 
 *.tmp
@@ -16,6 +15,3 @@ $RECYCLE.BIN/
 __pycache__
 
 .claude
-
-.output
-_*.md
