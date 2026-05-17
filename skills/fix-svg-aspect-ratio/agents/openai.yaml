@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fix SVG Aspect Ratio"
+  short_description: "Fix SVG root attributes that can distort aspect ratio"
+  default_prompt: "Use $fix-svg-aspect-ratio to fix SVG files whose root attributes make them render with a distorted aspect ratio."
