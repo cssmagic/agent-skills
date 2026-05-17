@@ -86,15 +86,15 @@ Example output:
 
 ```text
 - Fixed (1):
-  - /absolute/path/to/file-1.svg
+    - /absolute/path/to/file-1.svg
 - Already Correct (2):
-  - /absolute/path/to/file-2.svg
-  - /absolute/path/to/file-3.svg
+    - /absolute/path/to/file-2.svg
+    - /absolute/path/to/file-3.svg
 - Unsupported (1):
-  - /absolute/path/to/file-4.svg: missing or invalid viewBox
+    - /absolute/path/to/file-4.svg: missing or invalid viewBox
 - Failed (4):
-  - /absolute/path/to/file-5.svg: not valid UTF-8: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
-  - /absolute/path/to/file-6.svg: XML parse failed: mismatched tag: line 1, column 10
-  - /absolute/path/to/file-7.svg: root SVG start tag was not found
-  - /absolute/path/to/file-8.svg: write failed: [Errno 13] Permission denied
+    - /absolute/path/to/file-5.svg: not valid UTF-8: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+    - /absolute/path/to/file-6.svg: XML parse failed: mismatched tag: line 1, column 10
+    - /absolute/path/to/file-7.svg: root SVG start tag was not found
+    - /absolute/path/to/file-8.svg: write failed: [Errno 13] Permission denied
 ```

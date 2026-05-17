@@ -293,9 +293,9 @@ def print_result_group(results: list[Result], status: str, label: str, stream) -
 
     for result in matching:
         if result.reason:
-            print(f"  - {result.path}: {result.reason}", file=stream)
+            print(f"    - {result.path}: {result.reason}", file=stream)
         else:
-            print(f"  - {result.path}", file=stream)
+            print(f"    - {result.path}", file=stream)
 
 
 def print_results(results: list[Result]) -> None:
