@@ -30,6 +30,10 @@ Sync a source directory to a target directory, convert PNG images to lossless We
 
 Convert PNG images to lossless WebP in place within a directory tree, preserve original timestamps, and delete the source PNG files after successful conversion. (Effectively a more aggressive version of [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md).)
 
+### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
+
+Fix SVG root attributes that can make vector assets render with a distorted aspect ratio, especially SVGs exported by Figma Desktop MCP.
+
 
 
 ## Installation

@@ -30,6 +30,10 @@
 
 在目录树中原地将 PNG 图片转换为无损 WebP，保留原始时间戳，并在转换成功后删除源 PNG 文件。（相当于 [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md) 的激进版本。）
 
+### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
+
+修复 SVG 图片由于属性错误或缺失导致宽高比显示异常的情况，尤其适用于 Figma Desktop MCP 导出的 SVG 资源。
+
 
 
 ## 安装
