@@ -34,6 +34,10 @@ Convert PNG images to lossless WebP in place within a directory tree, preserve o
 
 Fix SVG root attributes that can make vector assets render with a distorted aspect ratio, especially SVGs exported by Figma Desktop MCP.
 
+### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+
+Fix stale absolute project paths in JetBrains `.idea` metadata after local repositories are moved or copied.
+
 
 
 ## Installation

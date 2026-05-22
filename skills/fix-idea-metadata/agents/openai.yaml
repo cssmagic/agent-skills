@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fix IDEA Metadata"
+  short_description: "Fix stale paths in JetBrains .idea metadata"
+  default_prompt: "Use $fix-idea-metadata to fix stale absolute project paths in JetBrains .idea metadata. Provide the starting working directory."

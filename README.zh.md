@@ -34,6 +34,10 @@
 
 修复 SVG 图片由于属性错误或缺失导致宽高比显示异常的情况，尤其适用于 Figma Desktop MCP 导出的 SVG 资源。
 
+### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+
+修复本地仓库移动或复制后，JetBrains `.idea` 元数据中残留的旧绝对项目路径。
+
 
 
 ## 安装
