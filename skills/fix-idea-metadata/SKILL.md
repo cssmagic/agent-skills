@@ -10,7 +10,7 @@ metadata:
 
 ## Purpose
 
-Fix known `.idea` metadata fields that can keep stale absolute project paths after a local repository is moved.
+Fix known `.idea` metadata fields that can keep stale paths after a local repository is moved, copied, or renamed.
 
 This skill is intentionally script-backed. It should only repair fields that are known to contain movable local project paths.
 
@@ -30,14 +30,19 @@ Normalize `~` and relative paths to an absolute path before reporting or running
 
 Search recursively under the starting directory for `.idea` directories. Treat each `.idea` parent directory as one work item.
 
-For each work item, inspect `.idea/workspace.xml` and fix only these known fields:
+Before writing any file, run preflight checks for every work item. If any `.idea` directory contains more than one `.iml` file, stop the whole run and report the affected project. Multiple module files are ambiguous and should not be guessed.
+
+For each valid work item, inspect `.idea/workspace.xml` and fix only these known fields:
 
 - `PropertiesComponent` data containing `last_opened_file_path`
+- `PropertiesComponent` data containing `ts.external.directory.path`
 - `CopilotPersistence > persistenceIdMap > entry@key`
 
-When either field contains an absolute path whose project directory name matches the current work item but whose root path differs from the current work item path, replace only that stale project-root prefix with the current work item path.
+When a known field contains an absolute path whose project directory name matches the current work item or the unique `.iml` stem, but whose root path differs from the current work item path, replace only that stale project-root prefix with the current work item path.
 
 Preserve trailing subpaths and unrelated values. For Copilot persistence entries, preserve the existing entry `value`.
+
+If the `.idea` directory contains exactly one `.iml` file and its filename does not match the current repository directory name, rename it to `{current-repository-name}.iml`. If `.idea/modules.xml` references the old `.iml` filename, update that reference to the new filename.
 
 
 
@@ -49,7 +54,8 @@ Do not rewrite:
 - remote deployment paths such as `/opt/...`
 - IDE installation paths such as `/Applications/PyCharm.app/...`
 - arbitrary absolute paths whose project directory name does not match the current work item
-- `.idea` files other than `workspace.xml`
+- `workspace.xml` paths outside the known field whitelist
+- `.idea` files other than `workspace.xml`, `modules.xml`, and the unique `.iml` file
 
 
 
@@ -67,21 +73,24 @@ Run the bundled script from this skill directory:
 python3 scripts/fix_idea_metadata.py "$start_dir"
 ```
 
-The script scans work items deterministically, writes changes in place only when content changes, and uses a same-directory temporary file followed by atomic replacement.
+The script scans work items deterministically, writes text-file changes in place only when content changes, and uses a same-directory temporary file followed by atomic replacement.
 
 
 
 ## Reporting
 
-Report the script output directly. The report groups work items by result:
+The script outputs an English report grouped by result. In the final response to the user, summarize or translate that report using the user's language preference:
 
 ```md
-- 已成功处理仓库 (1)：
-    - Awesome-AI
-        - 已修正字段：workspace.xml: CopilotPersistence entry key, last_opened_file_path
-- 无需处理仓库 (1)：
-    - another-repo
-- 处理失败仓库 (1)：
-    - broken-repo
-        - 失败原因：workspace.xml is not valid UTF-8
+- Successfully Processed Repositories (1):
+	- `success-repo`. Fixed files and fields:
+		- `old-name.iml`: renamed to `success-repo.iml`
+		- `modules.xml`: module fileurl/filepath
+		- `workspace.xml`: CopilotPersistence entry key
+		- `workspace.xml`: last_opened_file_path
+		- `workspace.xml`: ts.external.directory.path
+- Repositories Requiring No Changes (1):
+	- `another-repo`
+- Failed Repositories (1):
+	- `broken-repo`. Reason: `workspace.xml` is not valid UTF-8
 ```
