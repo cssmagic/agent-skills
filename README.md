@@ -10,33 +10,41 @@ Skills follow the [Agent Skills](https://agentskills.io/) format.
 
 ## Available Skills
 
-### [`bilingual-readme`](skills/bilingual-readme/SKILL.md)
+### 🤖 AI Agent
 
-Create and maintain bilingual READMEs for GitHub open-source projects.
+- #### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
 
-### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
+	Link locally developed skills into `~/.agents/skills` so local agents can discover them.
 
-Link locally developed skills into `~/.agents/skills` so local agents can discover them.
+### 📖 Documentation and Writing
 
-### [`markdown-guidelines`](skills/markdown-guidelines/SKILL.md)
+- #### [`bilingual-readme`](skills/bilingual-readme/SKILL.md)
 
-My personal Markdown formatting guidelines for writing Agent Skills, READMEs, technical documentation, [Issue Blog](https://github.com/cssmagic/Awesome-Issue-Blogs), and similar content.
+	Create and maintain bilingual READMEs for GitHub open-source projects.
 
-### [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md)
+- #### [`markdown-guidelines`](skills/markdown-guidelines/SKILL.md)
 
-Sync a source directory to a target directory, convert PNG images to lossless WebP, and preserve directory structure and timestamps.
+	My personal Markdown formatting guidelines for writing Agent Skills, READMEs, technical documentation, [Issue Blog](https://github.com/cssmagic/Awesome-Issue-Blogs), and similar content.
 
-### [`convert-png-to-webp`](skills/convert-png-to-webp/SKILL.md)
+### 🖼️ Image Processing and Conversion
 
-Convert PNG images to lossless WebP in place within a directory tree, preserve original timestamps, and delete the source PNG files after successful conversion. (Effectively a more aggressive version of [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md).)
+- #### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
 
-### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
+	Fix SVG root attributes that can make vector assets render with a distorted aspect ratio, especially SVGs exported by Figma Desktop MCP.
 
-Fix SVG root attributes that can make vector assets render with a distorted aspect ratio, especially SVGs exported by Figma Desktop MCP.
+- #### [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md)
 
-### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+	Sync a source directory to a target directory, convert PNG images to lossless WebP, and preserve directory structure and timestamps.
 
-Fix stale absolute project paths in JetBrains `.idea` metadata after local repositories are moved or copied.
+- #### [`convert-png-to-webp`](skills/convert-png-to-webp/SKILL.md)
+
+	Convert PNG images to lossless WebP in place within a directory tree, preserve original timestamps, and delete the source PNG files after successful conversion. (Effectively a more aggressive version of [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md).)
+
+### 💻 Programming and Development
+
+- #### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+
+	Fix stale absolute project paths in JetBrains `.idea` metadata after local repositories are moved or copied.
 
 
 

@@ -10,33 +10,44 @@
 
 ## 可用 Skills
 
-### [`bilingual-readme`](skills/bilingual-readme/SKILL.md)
+### 🤖 AI Agent 相关
 
-为 GitHub 开源项目创建和维护双语 README。
+- #### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
 
-### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
+	将本地开发中的 skill 链接到 `~/.agents/skills`，方便本机的 agent 发现。
 
-将本地开发中的 skill 链接到 `~/.agents/skills`，方便本机的 agent 发现。
 
-### [`markdown-guidelines`](skills/markdown-guidelines/SKILL.md)
+### 📖 文档与写作
 
-我个人的 Markdown 格式规范，适用于 Agent Skills、README、技术文档、[Issue Blog](https://github.com/cssmagic/Awesome-Issue-Blogs) 等场景的编写。
+- #### [`bilingual-readme`](skills/bilingual-readme/SKILL.md)
 
-### [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md)
+	为 GitHub 开源项目创建和维护双语 README。
 
-将源目录同步到目标目录，将其中的 PNG 图片转换为无损 WebP，并保留目录结构和时间戳。
+- #### [`markdown-guidelines`](skills/markdown-guidelines/SKILL.md)
 
-### [`convert-png-to-webp`](skills/convert-png-to-webp/SKILL.md)
+	我个人的 Markdown 格式规范，适用于 Agent Skills、README、技术文档、[Issue Blog](https://github.com/cssmagic/Awesome-Issue-Blogs) 等场景的编写。
 
-在目录树中原地将 PNG 图片转换为无损 WebP，保留原始时间戳，并在转换成功后删除源 PNG 文件。（相当于 [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md) 的激进版本。）
 
-### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
+### 🖼️ 图片处理和转换
 
-修复 SVG 图片由于属性错误或缺失导致宽高比显示异常的情况，尤其适用于 Figma Desktop MCP 导出的 SVG 资源。
+- #### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
 
-### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+	修复 SVG 图片由于属性错误或缺失导致宽高比显示异常的情况，尤其适用于 Figma Desktop MCP 导出的 SVG 资源。
 
-修复本地仓库移动或复制后，JetBrains `.idea` 元数据中残留的旧绝对项目路径。
+- #### [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md)
+
+	将源目录同步到目标目录，将其中的 PNG 图片转换为无损 WebP，并保留目录结构和时间戳。
+
+- #### [`convert-png-to-webp`](skills/convert-png-to-webp/SKILL.md)
+
+	在目录树中原地将 PNG 图片转换为无损 WebP，保留原始时间戳，并在转换成功后删除源 PNG 文件。（相当于 [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md) 的激进版本。）
+
+
+### 💻 编程与开发
+
+- #### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
+
+	修复本地仓库移动或复制后，JetBrains `.idea` 元数据中残留的旧绝对项目路径。
 
 
 
@@ -81,7 +92,7 @@ Convert this repository’s README into bilingual versions.
 
 每个 skill 目录可以包含：
 
-- `SKILL.md` - 给 agent 的说明。
+- `SKILL.md` - 给 agent 的指令。
 - `scripts/` - 可选的自动化辅助脚本。
 - `references/` - 可选的参考文档。
 - `agents/` - 可选的 agent 专用元数据或默认提示词。
