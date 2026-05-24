@@ -2,7 +2,7 @@ English | [中文](README.zh.md)
 
 # Agent Skills
 
-A collection of skills for AI agents, including Cursor, Codex, OpenClaw, and Claude Code. Skills are packaged instructions, helper scripts, references, and optional agent metadata that extend an agent's task-specific capabilities.
+A collection of skills for AI agents, including Cursor, Codex, OpenClaw, and Claude Code. Skills are packaged instructions and scripts that extend an agent's task-specific capabilities.
 
 Skills follow the [Agent Skills](https://agentskills.io/) format.
 

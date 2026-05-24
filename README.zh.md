@@ -2,7 +2,7 @@
 
 # Agent Skills
 
-这是一个面向 AI agent 的 skill 集合，适用于 Cursor、Codex、OpenClaw、Claude Code 等工具。Skill 是一组打包好的说明、辅助脚本、参考资料和可选的 agent 元数据，用来扩展 agent 在特定任务上的能力。
+这是一个面向 AI agent 的 skill 集合，适用于 Cursor、Codex、OpenClaw、Claude Code 等工具。Skill 是一组打包好的指令和脚本，用来扩展 agent 在特定任务上的能力。
 
 这些 skill 遵循 [Agent Skills](https://agentskills.io/) 格式。
 
