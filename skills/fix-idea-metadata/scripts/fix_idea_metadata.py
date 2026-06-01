@@ -32,6 +32,9 @@ COPILOT_COMPONENT_RE = re.compile(
     r'(?P<component><component\b[^>]*\bname="CopilotPersistence"[^>]*>.*?</component>)',
     re.DOTALL,
 )
+MODULE_NAME_RE = re.compile(
+    r'(?P<prefix><module\b[^>]*\bname=")(?P<name>[^"]*)(?P<suffix>"[^>]*>)'
+)
 
 RESULT_TYPES = (
     ("changed", "Successfully Processed Repositories"),
@@ -79,9 +82,11 @@ def parse_args() -> argparse.Namespace:
 
 def collect_idea_dirs(start_dir: Path) -> list[Path]:
     idea_dirs: list[Path] = []
+    if "node_modules" in start_dir.parts:
+        return idea_dirs
 
     for root, dirnames, _filenames in os.walk(start_dir):
-        dirnames.sort()
+        dirnames[:] = sorted(dirname for dirname in dirnames if dirname != "node_modules")
         if ".idea" in dirnames:
             idea_dirs.append(Path(root) / ".idea")
             dirnames.remove(".idea")
@@ -169,6 +174,8 @@ def replace_stale_project_prefix(
         return value, False
 
     current_root = project_root.as_posix()
+    if value == current_root or value.startswith(f"{current_root}/"):
+        return value, False
 
     for index, part in enumerate(parts):
         if part not in project_names:
@@ -236,6 +243,28 @@ def fix_copilot_keys(text: str, item: WorkItem) -> tuple[str, set[str]]:
     return COPILOT_COMPONENT_RE.sub(replace_component_match, text), fields
 
 
+def fix_module_names(text: str, item: WorkItem) -> tuple[str, set[str]]:
+    fields: set[str] = set()
+
+    if item.iml_path is None:
+        return text, fields
+
+    old_project_name = item.iml_path.stem
+    new_project_name = item.project_root.name
+    if old_project_name == new_project_name:
+        return text, fields
+
+    def replace_match(match: re.Match[str]) -> str:
+        module_name = match.group("name")
+        if module_name != old_project_name:
+            return match.group(0)
+
+        fields.add("`workspace.xml`: module name")
+        return f"{match.group('prefix')}{new_project_name}{match.group('suffix')}"
+
+    return MODULE_NAME_RE.sub(replace_match, text), fields
+
+
 def atomic_write_text(path: Path, text: str) -> None:
     mode = path.stat().st_mode
     temp_name: str | None = None
@@ -295,7 +324,8 @@ def process_workspace_xml(item: WorkItem) -> tuple[set[str], WorkResult | None]:
 
     updated, property_fields = fix_property_paths(original, item)
     updated, copilot_fields = fix_copilot_keys(updated, item)
-    fields = property_fields | copilot_fields
+    updated, module_name_fields = fix_module_names(updated, item)
+    fields = property_fields | copilot_fields | module_name_fields
 
     if updated == original:
         return set(), None
@@ -398,13 +428,14 @@ def print_report(results: list[WorkResult]) -> None:
         items = sorted(by_status[status], key=lambda item: item.project_root.as_posix())
         print(f"- {label} ({len(items)}):")
         for item in items:
-            print(f"    - `{item.name}`")
             if status == "changed":
-                print("        - Fixed files and fields:")
+                print(f"    - `{item.name}`. Fixed files and fields:")
                 for field in sorted(item.fields):
-                    print(f"            - {field}")
+                    print(f"        - {field}")
             elif status == "failed":
-                print(f"        - Reason: {item.reason}")
+                print(f"    - `{item.name}`. Reason: {item.reason}")
+            else:
+                print(f"    - `{item.name}`")
 
 
 def main() -> int:

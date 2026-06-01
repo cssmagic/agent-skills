@@ -1,6 +1,6 @@
 ---
 name: fix-idea-metadata
-description: "Use when a local JetBrains IDE project was moved or copied and its `.idea` metadata may still contain stale absolute project paths."
+description: "Use when a local JetBrains IDE project was moved or renamed and its `.idea` metadata may still contain stale absolute project paths."
 license: MIT
 metadata:
   author: cssmagic
@@ -28,7 +28,7 @@ Normalize `~` and relative paths to an absolute path before reporting or running
 
 ## Fixes Applied
 
-Search recursively under the starting directory for `.idea` directories. Treat each `.idea` parent directory as one work item.
+Search recursively under the starting directory for `.idea` directories. Skip `node_modules` directories while searching. Treat each `.idea` parent directory as one work item.
 
 Before writing any file, run preflight checks for every work item. If any `.idea` directory contains more than one `.iml` file, stop the whole run and report the affected project. Multiple module files are ambiguous and should not be guessed.
 
@@ -37,10 +37,15 @@ For each valid work item, inspect `.idea/workspace.xml` and fix only these known
 - `PropertiesComponent` data containing `last_opened_file_path`
 - `PropertiesComponent` data containing `ts.external.directory.path`
 - `CopilotPersistence > persistenceIdMap > entry@key`
+- `workspace.xml` XML elements with a `module name` attribute
 
 When a known field contains an absolute path whose project directory name matches the current work item or the unique `.iml` stem, but whose root path differs from the current work item path, replace only that stale project-root prefix with the current work item path.
 
+If an absolute path already equals the current work item path or is already under it, treat it as valid and do not rewrite it. This avoids corrupting paths when a parent directory and the project directory share the same name.
+
 Preserve trailing subpaths and unrelated values. For Copilot persistence entries, preserve the existing entry `value`.
+
+For `<module name="...">`, only replace the value when it exactly equals the unique `.iml` stem and that stem differs from the current repository directory name. If the value is empty or different from the `.iml` stem, leave it unchanged.
 
 If the `.idea` directory contains exactly one `.iml` file and its filename does not match the current repository directory name, rename it to `{current-repository-name}.iml`. If `.idea/modules.xml` references the old `.iml` filename, update that reference to the new filename.
 
@@ -83,14 +88,15 @@ The script outputs an English report grouped by result. In the final response to
 
 ```md
 - Successfully Processed Repositories (1):
-	- `success-repo`. Fixed files and fields:
-		- `old-name.iml`: renamed to `success-repo.iml`
+	- `{repo_name}`. Fixed files and fields:
+		- `old-name.iml`: renamed to `{repo_name}.iml`
 		- `modules.xml`: module fileurl/filepath
 		- `workspace.xml`: CopilotPersistence entry key
 		- `workspace.xml`: last_opened_file_path
+		- `workspace.xml`: module name
 		- `workspace.xml`: ts.external.directory.path
 - Repositories Requiring No Changes (1):
-	- `another-repo`
+	- `{repo_name}`
 - Failed Repositories (1):
-	- `broken-repo`. Reason: `workspace.xml` is not valid UTF-8
+	- `{repo_name}`. Reason: `workspace.xml` is not valid UTF-8
 ```
