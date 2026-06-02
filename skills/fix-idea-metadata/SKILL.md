@@ -47,7 +47,7 @@ Preserve trailing subpaths and unrelated values. For Copilot persistence entries
 
 For `<module name="...">`, only replace the value when it exactly equals the unique `.iml` stem and that stem differs from the current repository directory name. If the value is empty or different from the `.iml` stem, leave it unchanged.
 
-If the `.idea` directory contains exactly one `.iml` file and its filename does not match the current repository directory name, rename it to `{current-repository-name}.iml`. If `.idea/modules.xml` references the old `.iml` filename, update that reference to the new filename.
+If the `.idea` directory contains exactly one `.iml` file and its filename does not match the current repository directory name, rename it to `{current-repository-name}.iml`. If the old and new `.iml` names differ only by letter case, rename through a temporary intermediate filename first so case-insensitive file systems still apply the intended spelling. If `.idea/modules.xml` references the old `.iml` filename, update that reference to the new filename.
 
 
 

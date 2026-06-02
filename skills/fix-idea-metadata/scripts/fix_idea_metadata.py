@@ -8,6 +8,7 @@ import os
 import re
 import sys
 import tempfile
+import uuid
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
@@ -102,6 +103,13 @@ def list_iml_files(idea_dir: Path) -> list[Path]:
     )
 
 
+def paths_refer_to_same_file(left: Path, right: Path) -> bool:
+    try:
+        return left.samefile(right)
+    except OSError:
+        return False
+
+
 def build_work_items(idea_dirs: list[Path]) -> tuple[list[WorkItem], list[WorkResult]]:
     work_items: list[WorkItem] = []
     failures: list[WorkResult] = []
@@ -129,7 +137,11 @@ def build_work_items(idea_dirs: list[Path]) -> tuple[list[WorkItem], list[WorkRe
         if iml_path:
             project_names.add(iml_path.stem)
             target_iml = idea_dir / new_iml_name
-            if iml_path.name != new_iml_name and target_iml.exists():
+            if (
+                iml_path.name != new_iml_name
+                and target_iml.exists()
+                and not paths_refer_to_same_file(iml_path, target_iml)
+            ):
                 failures.append(
                     WorkResult(
                         project_root=project_root,
@@ -295,6 +307,35 @@ def atomic_write_text(path: Path, text: str) -> None:
         raise
 
 
+def make_case_rename_temp_path(target: Path) -> Path:
+    for _attempt in range(100):
+        candidate = target.with_name(
+            f".{target.name}.tmp-case-rename-{os.getpid()}-{uuid.uuid4().hex}"
+        )
+        if not candidate.exists():
+            return candidate
+
+    raise OSError(f"failed to allocate temporary IML rename path for {target}")
+
+
+def rename_iml_file(source: Path, target: Path) -> None:
+    if source.name.casefold() != target.name.casefold():
+        source.rename(target)
+        return
+
+    temp = make_case_rename_temp_path(target)
+    source.rename(temp)
+
+    try:
+        temp.rename(target)
+    except OSError:
+        try:
+            temp.rename(source)
+        except OSError:
+            pass
+        raise
+
+
 def process_workspace_xml(item: WorkItem) -> tuple[set[str], WorkResult | None]:
     workspace_xml = item.idea_dir / "workspace.xml"
 
@@ -388,7 +429,7 @@ def process_iml_metadata(item: WorkItem) -> tuple[set[str], WorkResult | None]:
 
     target_iml = item.idea_dir / item.new_iml_name
     try:
-        item.iml_path.rename(target_iml)
+        rename_iml_file(item.iml_path, target_iml)
     except OSError as error:
         return fields, WorkResult(
             project_root=item.project_root,
