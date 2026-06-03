@@ -12,9 +12,9 @@ Skills follow the [Agent Skills](https://agentskills.io/) format.
 
 ### 🤖 AI Agent
 
-- #### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
+- #### [`link-as-global-skills`](skills/link-as-global-skills/)
 
-	Link locally developed skills into `~/.agents/skills` so local agents can discover them.
+	Link locally developed skills into `~/.agents/skills` so local agents can discover them. It is ideal for authors who are writing, debugging, or maintaining skills.
 
 ### 📖 Documentation and Writing
 

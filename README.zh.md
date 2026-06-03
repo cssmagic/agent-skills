@@ -12,9 +12,9 @@
 
 ### 🤖 AI Agent 相关
 
-- #### [`link-as-global-skills`](skills/link-as-global-skills/SKILL.md)
+- #### [`link-as-global-skills`](skills/link-as-global-skills/README.zh.md)
 
-	将本地开发中的 skill 链接到 `~/.agents/skills`，方便本机的 agent 发现。
+	将本地开发中的 skill 链接到 `~/.agents/skills`，方便本机的 agent 发现。它非常适合正在编写、调试、维护 skill 的作者。
 
 
 ### 📖 文档与写作
