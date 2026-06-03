@@ -6,7 +6,7 @@ metadata:
   author: cssmagic
 ---
 
-# Link As Global Skills
+# Link as Global Skills
 
 ## Purpose
 
