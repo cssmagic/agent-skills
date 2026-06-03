@@ -68,4 +68,4 @@ npx skills add cssmagic/agent-skills -s link-as-global-skills -g
 ## 更多有用的 Skills
 
 这个 skill 的作者还开源了不少有用的 skill，去看看吧！<br>
-https://github.com/cssmagic/agent-skills/blob/master/README.zh.md
+https://github.com/cssmagic/agent-skills/blob/master/README.zh.md#agent-skills

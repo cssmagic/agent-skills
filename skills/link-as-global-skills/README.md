@@ -68,4 +68,4 @@ After it finishes, tell your AI agent to reload skills or run a command like `/r
 ## More Useful Skills
 
 The author of this skill has open-sourced several other useful skills. Take a look:<br>
-https://github.com/cssmagic/agent-skills/
+https://github.com/cssmagic/agent-skills#readme
