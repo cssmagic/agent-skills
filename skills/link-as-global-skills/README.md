@@ -8,7 +8,7 @@ As a skill developer, the annoying part is often not writing `SKILL.md`, but mak
 
 This skill symlinks the skills you are developing locally into `~/.agents/skills`. Then, as you keep editing skills in your repository, your local agent can call their latest versions without repeated copying, reinstalling, or syncing.
 
-So, it is ideal for authors who are writing, debugging, or maintaining skills. (If you only want to install and use a public skill, using the Skills CLI directly is usually a better fit.)
+So, it is ideal for authors who are writing, debugging, or maintaining skills.
 
 
 

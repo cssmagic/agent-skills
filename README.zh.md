@@ -2,80 +2,87 @@
 
 # Agent Skills
 
-这是一个面向 AI agent 的 skill 集合，适用于 Cursor、Codex、OpenClaw、Claude Code 等工具。Skill 是一组打包好的指令和脚本，用来扩展 agent 在特定任务上的能力。
+> “Skill” 是一组打包好的指令和脚本，用来扩展 AI agent 在特定任务上的能力，适用于 Cursor、Codex、OpenClaw、Claude Code 等工具。它们遵循 [Agent Skills](https://agentskills.io/) 开放标准。
 
-这些 skill 遵循 [Agent Skills](https://agentskills.io/) 格式。
-
-
-
-## 可用 Skills
-
-### 🤖 AI Agent 相关
-
-- #### [`link-as-global-skills`](skills/link-as-global-skills/README.zh.md)
-
-	将本地开发中的 skill 链接到 `~/.agents/skills`，方便本机的 agent 发现。它非常适合正在编写、调试、维护 skill 的作者。
-
-
-### 📖 文档与写作
-
-- #### [`bilingual-readme`](skills/bilingual-readme/SKILL.md)
-
-	为 GitHub 开源项目创建和维护双语 README。
-
-- #### [`markdown-guidelines`](skills/markdown-guidelines/SKILL.md)
-
-	我个人的 Markdown 格式规范，适用于 Agent Skills、README、技术文档、[Issue Blog](https://github.com/cssmagic/Awesome-Issue-Blogs) 等场景的编写。
-
-
-### 🖼️ 图片处理和转换
-
-- #### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/SKILL.md)
-
-	修复 SVG 图片由于属性错误或缺失导致宽高比显示异常的情况，尤其适用于 Figma Desktop MCP 导出的 SVG 资源。
-
-- #### [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md)
-
-	将源目录同步到目标目录，将其中的 PNG 图片转换为无损 WebP，并保留目录结构和时间戳。
-
-- #### [`convert-png-to-webp`](skills/convert-png-to-webp/SKILL.md)
-
-	在目录树中原地将 PNG 图片转换为无损 WebP，保留原始时间戳，并在转换成功后删除源 PNG 文件。（相当于 [`sync-image-as-webp`](skills/sync-image-as-webp/SKILL.md) 的激进版本。）
-
-
-### 💻 编程与开发
-
-- #### [`fix-idea-metadata`](skills/fix-idea-metadata/SKILL.md)
-
-	修复本地仓库移动或复制后，JetBrains `.idea` 元数据中残留的旧绝对项目路径。
+魔法哥每天在用的 skill 都开源在这里，所有 skill 分类展示如下。
 
 
 
-## 安装
+## 🤖 AI Agent 相关
+
+- ### [`link-as-global-skills`](skills/link-as-global-skills/README.zh.md)
+
+	作为一个 skill 开发者，你在编写 skill 时，最烦的往往不是写 `SKILL.md`，而是让本机的 agent 立刻读到你刚改完的版本。
+
+	这个 skill 会把你在本地开发的 skill 软链接到 `~/.agents/skills` 目录下。这样当你在仓库里持续修改 skill 时，本机的 agent 随时可以调用它的最新版本，无需反复复制、重装或同步。
+
+	因此，它非常适合正在编写、调试、维护 skill 的作者。
+
+
+
+## 📖 文档与写作
+
+- ### [`bilingual-readme`](skills/bilingual-readme/README.zh.md)
+
+	开源项目经常需要一份面向全球读者的英文 README，也需要一份面向中文用户的中文 README，但两份文档长期保持一致很容易被忽略。
+
+	这个 skill 可以把单语言 README 转换成配套的 `README.md` 与 `README.zh.md`，也可以维护已有的双语 README，让它们在结构和事实上保持一致。它适合每一位国际化的开源项目维护者。
+
+- ### [`markdown-guidelines`](skills/markdown-guidelines/README.zh.md)
+
+	作为一个开源实践者、技术作者和 AI 探索者，我几乎每天都在写 Markdown。这个 skill 汇总了我自己沉淀多年的 Markdown 风格偏好，它提供了良好的源码可读性。
+
+	安装这个 skill 之后，agent 在帮你生成或修改任何 Markdown 文本时都会严格保持指定格式，再也无需手动修改。
+
+	如果你有不同的风格偏好，也可以 fork 这个 skill，改成你喜欢的样子。它适合每一位 Markdown 用户。
+
+
+
+## 🖼️ 图片处理和转换
+
+- ### [`fix-svg-aspect-ratio`](skills/fix-svg-aspect-ratio/README.zh.md)
+
+	有些 SVG 在一个工具里看起来正常，换到另一个环境就会被拉伸、压扁，或错误地填满容器。这通常是因为根 `<svg>` 属性没有清楚地保留图形的自然宽高比。
+
+	这个 skill 提供了一个很小的脚本化修复步骤，尤其适合处理 Figma Desktop MCP 导出的 SVG 矢量资源。它适合经常处理 SVG 素材的网页设计师和开发者。
+
+- ### [`convert-png-to-webp`](skills/convert-png-to-webp/README.zh.md)
+
+	PNG 资源很容易悄悄占掉大量空间。当你已经确定想在同一棵目录树里用 WebP 替换它们时，手动转换、保留时间戳、再删除原文件既重复又容易出错。
+
+	这个 skill 提供了一套谨慎的脚本化流程，用来原地把 PNG 转成无损 WebP。它适合需要减少图片素材的磁盘占用，且关心文件原始时间戳的场景。
+
+
+
+## 💻 编程与开发
+
+- ### [`fix-idea-metadata`](skills/fix-idea-metadata/README.zh.md)
+
+	当你移动、复制或重命名一个本地 JetBrains IDE 项目后，`.idea` 元数据里可能还保留着旧的绝对路径。这可能会引发一些意外的结果。
+
+	这个 skill 可以在 `.idea` 目录中修复那些已经过时的绝对路径字段。
+
+
+
+***
+
+## 使用方法
+
+### 安装
 
 ```bash
 npx skills add cssmagic/agent-skills
 ```
 
-根据交互式命令行界面的提示，选择需要安装的 skill。
-
-
-
-## 使用方法
+根据交互式命令行界面的提示，选择需要安装的 skill（↓↑：移动光标，空格：选择，回车：确认）。
 
 ### 显式调用
 
-在支持 Agent Skills 的 agent 中按名称调用 skill。有些 agent 支持通过 `/` 字符来指定 skill，就可以这样用：
+在支持 Agent Skills 的 agent 中按名称调用 skill。大多数 agent 都支持通过 `/` 字符来指定 skill，就可以这样用：
 
 ```text
 /bilingual-readme
 Handle current repo.
-```
-
-还有一些 agent 支持通过 `$` 字符来指定 skill：
-
-```text
-Run $bilingual-readme in this repo.
 ```
 
 ### 隐式调用
@@ -85,17 +92,6 @@ Run $bilingual-readme in this repo.
 ```text
 Convert this repository’s README into bilingual versions.
 ```
-
-
-
-## Skill 结构
-
-每个 skill 目录可以包含：
-
-- `SKILL.md` - 给 agent 的指令。
-- `scripts/` - 可选的自动化辅助脚本。
-- `references/` - 可选的参考文档。
-- `agents/` - 可选的 agent 专用元数据或默认提示词。
 
 
 
