@@ -78,7 +78,7 @@ npx skills add cssmagic/agent-skills
 
 ### 显式调用
 
-在支持 Agent Skills 的 agent 中按名称调用 skill。大多数 agent 都支持通过 `/` 字符来指定 skill，就可以这样用：
+安装后，在支持 Agent Skills 的 agent 中按名称调用 skill。大多数 agent 都支持通过 `/` 字符来指定 skill，就可以这样用：
 
 ```text
 /bilingual-readme

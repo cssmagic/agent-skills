@@ -78,7 +78,7 @@ Follow the interactive CLI prompts to select the skills you want to install (↓
 
 ### Explicit Invocation
 
-Invoke a skill by name from an agent that supports Agent Skills. Most agents support specifying skills with `/`, so you can use:
+After installation, invoke a skill by name from an agent that supports Agent Skills. Most agents support specifying skills with `/`, so you can use:
 
 ```text
 /bilingual-readme
