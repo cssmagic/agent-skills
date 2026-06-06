@@ -15,9 +15,9 @@ So, it is ideal for authors who are writing, debugging, or maintaining skills. (
 ## What Does It Do?
 
 - Searches from your given start directory for a set of local skills.
-- Symlinks those skill directories into `~/.agents/skills`.
-	- Updates existing symlinks.
-	- Refuses to overwrite existing regular files or real directories.
+- Symlinks those skill directories into `~/.agents/skills`. If it finds existing targets with the same names:
+	- Existing symlinks will be updated.
+	- Existing regular files or real directories won't be overwritten.
 
 The result is simple: your local skills repository becomes the global skills source for this machine, ready for local agents to call at any time.
 
