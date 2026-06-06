@@ -93,6 +93,14 @@ English | [中文](README.zh.md)
 
 
 
+## Grammar Rules
+
+- In Chinese prose, keep embedded English words in their base form by default. Do not pluralize them just to match quantity, unless the term is conventionally used in a fixed plural form, such as data.
+- Use one spelling for the same technical concept across the README pair. Do not switch between `issue`, `Issue`, and `议题` without a clear contextual reason.
+- Do not change the capitalization, hyphenation, underscores, or word form of English abbreviations, product names, command names, or API names to fit Chinese grammar.
+
+
+
 ## Handling Existing Patterns
 
 - If the repository already uses another language selector style, keep it if it is clear and symmetrical.
